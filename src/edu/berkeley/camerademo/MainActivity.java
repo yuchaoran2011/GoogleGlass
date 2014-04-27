@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import org.apache.http.client.HttpClient;
@@ -19,17 +21,32 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pf.floors.Area;
+import pf.floors.AreaBuilder;
+import pf.particle.ParticlePosition;
+import pf.utils.Point2D;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,8 +54,13 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import cz.muni.fi.sandbox.dsp.filters.ContinuousConvolution;
+import cz.muni.fi.sandbox.dsp.filters.FrequencyCounter;
+import cz.muni.fi.sandbox.dsp.filters.SinXPiWindow;
+import cz.muni.fi.sandbox.service.stepdetector.MovingAverageStepDetector;
+import cz.muni.fi.sandbox.service.stepdetector.MovingAverageStepDetector.MovingAverageStepDetectorState;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SensorEventListener {
 
 	private static final String TAG = "ImgLoc";
 	static final String IMAGE_URL = "http://sofia.eecs.berkeley.edu:8010";
@@ -49,6 +71,51 @@ public class MainActivity extends Activity {
 	private CameraPreview mPreview;
 	private TextView textview;
 	private int numPictureTaken = 0;
+
+	private float[] cameraPose = new float[3];
+	float[] orientVals = new float[3];
+	float[] gravity = new float[3];
+	float[] geomag = new float[3];
+	float[] inR = new float[16];
+	float[] I = new float[16];
+	private SensorManager mSensorManager;
+	private Sensor rotationSensor, accelerometer, magnetometer;
+
+	private MovingAverageStepDetector mStepDetector;
+	private ContinuousConvolution mCC;
+	float mConvolution;
+	private FrequencyCounter freqCounter;
+
+	private ParticlePosition mParticleCloud;
+	double[] cloudCenter;
+	ArrayList<Point2D> imgStepHistory;
+
+	final float pi = (float) Math.PI;
+	final float rad2deg = 180/pi; 
+
+	MapView mMapView;
+
+	double movingAverage1 = MovingAverageStepDetector.MA1_WINDOW;
+	double movingAverage2 = MovingAverageStepDetector.MA2_WINDOW;
+
+	double lowPowerCutoff = MovingAverageStepDetector.LOW_POWER_CUTOFF_VALUE;
+	double highPowerCutoff = MovingAverageStepDetector.HIGH_POWER_CUTOFF_VALUE;
+
+	private int mMASize = 20;
+
+	protected PowerManager.WakeLock mWakeLock;
+
+	private AreaBuilder mCory2Builder;
+	private Area mCory2;
+
+    //private String PATH_FILE_UPLOAD_URL = "http://10.142.32.171:8003/central/path_file";
+
+	boolean lastLineIsWiFiOrImage = false;
+
+	Intent intent;
+
+	private WifiScanService wifiService;
+
 
 	private final Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
 
@@ -94,9 +161,9 @@ public class MainActivity extends Activity {
 			poseMap.put("latitude", 0f);
 			poseMap.put("longitude", 0f);
 			poseMap.put("altitude", (float)0.0);
-			poseMap.put("yaw", null);
-			poseMap.put("pitch", null);
-			poseMap.put("roll", null);
+			poseMap.put("yaw", cameraPose[0]);
+			poseMap.put("pitch", cameraPose[1]);
+			poseMap.put("roll", cameraPose[2]);
 			poseMap.put("ambiguity_meters", (float)1.0e+12);
 			pose = new JSONObject(poseMap);
 
@@ -143,8 +210,6 @@ public class MainActivity extends Activity {
 		imageWidth = image.getWidth();
 		imageHeight = image.getHeight();
 
-		//if (imageWidth > maxWidth || imageHeight > maxHeight) {
-
 		double imageAspect = (double) imageWidth / imageHeight;
 		double desiredAspect = (double) maxWidth / maxHeight;
 		double scaleFactor;
@@ -161,7 +226,6 @@ public class MainActivity extends Activity {
 		Bitmap scaledBitmap = Bitmap.createScaledBitmap(image,
 				(int) scaleWidth, (int) scaleHeight, true);
 		image = scaledBitmap;
-		//}
 
 		if (rotationDegrees != 0) {
 			Matrix matrix = new Matrix();
@@ -170,28 +234,100 @@ public class MainActivity extends Activity {
 
 			image = rotatedBMP;
 		}
-
 		return image;
 	}
 
-	private BroadcastReceiver uiUpdated_img= new BroadcastReceiver() {
-		/*public byte[] readImgFile(String path) {
-			File file = new File(path);
-			int size = (int) file.length();
-			byte[] bytes = new byte[size];
-			try {
-				BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-				buf.read(bytes, 0, bytes.length);
-				buf.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+
+	public void processAccelerometerEvent(SensorEvent event) {                
+		mConvolution = (float) (mCC.process(event.values[2]));
+		mStepDetector.onSensorChanged(event);
+		displayStepDetectorState(mStepDetector);
+	}
+
+
+	void displayStepDetectorState(MovingAverageStepDetector detector) {
+		MovingAverageStepDetectorState s = detector.getState();
+		boolean stepDetected = s.states[0];
+		boolean signalPowerOutOfRange = s.states[1];
+
+		// The offset is now hard coded
+		float offsetDeg = 0.0f;
+
+		if (stepDetected) {
+
+			if (!signalPowerOutOfRange && detector.stepLength >= 0) {
+
+				if (mParticleCloud != null) {
+					float azimuth = orientVals[0]*rad2deg+12.387f-offsetDeg;
+
+					double currHeading = (double)azimuth;// - 45;
+
+					long currTime = System.currentTimeMillis();
+					if (wifiService != null) {
+						wifiService.addStep(new Step(currHeading, detector.stepLength, currTime));
+					}
+					this.mParticleCloud.onStep(currHeading, detector.stepLength);
+
+					String partCenter = mParticleCloud.getCenter();
+					String coords[] = partCenter.split("\\s+");
+					float new_x = Float.parseFloat(coords[0]);
+					float new_y = Float.parseFloat(coords[1]);
+					imgStepHistory.add(new Point2D(new_x,new_y));
+					mMapView.updatePos(new_x, new_y);
+
+					lastLineIsWiFiOrImage = false;
+					cloudCenter[0] = (double)new_x;
+					cloudCenter[1] = (double)new_y;
+					if (wifiService != null)
+						wifiService.setCloudPosition(new Point2D(cloudCenter[0], cloudCenter[1]));
+				}
+
 			}
-			return bytes;
-		}*/
+		}
+	}
+
+
+	// The following method is required by the SensorEventListener interface;
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {    
+	}
+
+	// The following method is required by the SensorEventListener interface;
+	// Hook this event to process updates;
+	public void onSensorChanged(SensorEvent event) {
+		int type = event.sensor.getType();
+
+		switch (type) {  
+		case Sensor.TYPE_ACCELEROMETER:
+			synchronized(this) {
+				gravity = event.values.clone();
+				cameraPose = gravity;
+				processAccelerometerEvent(event);
+				freqCounter.push(event.timestamp);
+			}
+			break;
+		case Sensor.TYPE_MAGNETIC_FIELD:
+			geomag = event.values.clone();
+			break;
+		}
+
+		// If gravity and geomag have values then find rotation matrix
+		if (gravity != null && geomag != null){
+
+			// checks that the rotation matrix is found
+			boolean success = SensorManager.getRotationMatrix(inR, I, gravity, geomag);
+			if (success){
+				SensorManager.remapCoordinateSystem(inR, SensorManager.AXIS_X, SensorManager.AXIS_Z, inR);
+				SensorManager.getOrientation(inR, orientVals);
+			}
+		} 
+	}
+
+
+
+
+
+	private BroadcastReceiver uiUpdated_img= new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -202,12 +338,10 @@ public class MainActivity extends Activity {
 				loc_json = new JSONObject(intent.getExtras().getString("json_response"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 			if (!intent.getExtras().getString("json_response").isEmpty() )
 				try {
-					//float poseConfidence = Float.parseFloat(loc_json.getString("pose_confidence"));
-
 					float new_x = Float.valueOf(loc_json.getString("local_x"));
 					float new_y = Float.valueOf(loc_json.getString("local_y"));
 					float retr_confidence = Float.valueOf(loc_json.getString("retrieval_confidence"));
@@ -220,24 +354,160 @@ public class MainActivity extends Activity {
 							+ "\n Confidence: " +loc_json.getString("overall_confidence");
 					Toast.makeText(context, imgResult, Toast.LENGTH_SHORT).show();
 
+					if (mParticleCloud != null) {
+
+						if (imgStepHistory.size() > 0) {
+							//Point2D lastCoord = imgStepHistory.get(imgStepHistory.size()-1);
+							Point2D firstCoord = imgStepHistory.get(0);			
+
+							Point2D imgPosition = mParticleCloud.getShiftedCoord(new_x, new_y, 
+									firstCoord.getX(), firstCoord.getY());
+							img_x = (float)imgPosition.getX();
+							img_y = (float)imgPosition.getY();
+
+							imgStepHistory.clear();
+						}
+
+						mParticleCloud.onRssImageUpdate(1.0-Double.parseDouble(loc_json.getString("retrieval_confidence")), img_x, img_y, (double)retr_confidence, "i");
+						String partCenter = mParticleCloud.getCenter();
+						String coords[] = partCenter.split("\\s+");
+						new_x = Float.parseFloat(coords[0]);
+						new_y = Float.parseFloat(coords[1]);
+						mMapView.updatePos(new_x, new_y);
+					}
+					lastLineIsWiFiOrImage = true;
+					
+					/*
+					long tstamp = System.currentTimeMillis();
+					String logResult = tstamp + " " + loc_json.getString("local_x") + " " + loc_json.getString("local_y")
+							+ " " +loc_json.getString("retrieval_confidence") + " " + img_x + " "  + img_y + "\n";*/
+
 				} catch (JSONException e) {
 					Toast.makeText(context, "No coordinates received", Toast.LENGTH_SHORT).show();
 				}
 		}
 	};
 
+	private BroadcastReceiver uiUpdated= new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			Log.d("WiFi", "Received WiFi response!");
+			JSONObject loc_json = new JSONObject();
+			try {
+				loc_json = new JSONObject(intent.getExtras().getString("json_response"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (!intent.getExtras().getString("json_response").isEmpty() )
+				try {
+					long t_received = intent.getExtras().getLong("t_received");
+					long t_init = intent.getExtras().getLong("t_init");
+
+					double confidence = Double.parseDouble(loc_json.getString("confidence"));
+
+					String loc[] = loc_json.getString("location").split("\\s");
+					float new_x = Float.valueOf(loc[0]);
+					float new_y = Float.valueOf(loc[1]);
+
+					float old_x = new_x;
+					float old_y = new_y;
+
+					if (mParticleCloud != null) {
+						String partCenter = mParticleCloud.getCenter();
+						String[] coords;
+						ArrayList<Step> stepHistory = new ArrayList<Step>();
+						if (wifiService != null)
+							stepHistory = wifiService.getStepHistory(t_init, t_received);
+						if (stepHistory.size() > 0) {
+							for (Step s : stepHistory) {
+								new_x += s.distance*Math.sin(Math.toRadians(s.hdg));
+								new_y += s.distance*Math.cos(Math.toRadians(s.hdg));
+							}
+							new_x = (old_x+new_x)/2;
+							new_y = (old_y+new_y)/2;
+							Point2D newCoord = mParticleCloud.getValidPoint(new Point2D(new_x,new_y), new Point2D(old_x,old_y));
+							new_x = (float)newCoord.getX();
+							new_y = (float)newCoord.getY();
+						}
+						/*
+						long tstamp = System.currentTimeMillis();
+						String logResult = tstamp + " " + t_sent + " " + t_received + " " +old_x + " " + old_y + " -> " + new_x + " " + new_y
+								+ " " +loc_json.getString("confidence") + "\n";*/
+
+						lastLineIsWiFiOrImage = true;
+						mParticleCloud.onRssImageUpdate(5.0, new_x, new_y, confidence,"w");
+						partCenter = mParticleCloud.getCenter();
+						coords = partCenter.split("\\s+");
+						new_x = Float.parseFloat(coords[0]);
+						new_y = Float.parseFloat(coords[1]);
+						mMapView.updatePos(new_x, new_y);
+
+					} else {		
+						lastLineIsWiFiOrImage = true;
+						String wifiResult = "Coordinates: " + new_x + " " + new_y
+								+ "\nConfidence: " +loc_json.getString("confidence");
+						Toast.makeText(context, wifiResult, Toast.LENGTH_SHORT).show();
+
+						/*
+						 long tstamp = System.currentTimeMillis();
+						 String logResult = tstamp + " "  + new_x + " " + new_y
+								+ " " +loc_json.getString("confidence") + "\n";*/
+					}		
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+		}
+	};
+
+
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		textview = (TextView)findViewById(R.id.textView2);
+		mMapView = (MapView)findViewById(R.id.map_view);
 
 		HttpParams params = new BasicHttpParams();
 		SchemeRegistry registry = new SchemeRegistry();
 		registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 8010));
 		cm = new ThreadSafeClientConnManager(params, registry);
 		httpclient = new DefaultHttpClient(cm, params);
+
+		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
+		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
+		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+		rotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+		accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Stay awake!");
+		this.mWakeLock.acquire();
+
+		mStepDetector = new MovingAverageStepDetector(movingAverage1, movingAverage2, lowPowerCutoff, highPowerCutoff);
+
+		mCC = new ContinuousConvolution(new SinXPiWindow(mMASize));
+		freqCounter = new FrequencyCounter(20);
+		cloudCenter = new double[2];        
+		File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
+		if (directory.exists())
+			deleteRecursive(directory);
+		directory.mkdirs();
 	}
+
+	void deleteRecursive(File fileOrDirectory) {
+		if (fileOrDirectory.isDirectory())
+			for (File child : fileOrDirectory.listFiles())
+				deleteRecursive(child);
+
+		fileOrDirectory.delete();
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -259,6 +529,45 @@ public class MainActivity extends Activity {
 		super.onResume();
 		restartCamera();
 		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
+
+		mSensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+		mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_FASTEST);
+
+		this.mCory2Builder = new AreaBuilder();        
+		AssetManager am = getAssets();
+		this.mCory2Builder.readSimpleTextWalls(am, "cory2.edge");
+		mCory2 = mCory2Builder.create();
+		this.mParticleCloud = new ParticlePosition(0,0, mCory2); 
+		mParticleCloud.readCoords(am, "wifi_coords.dat");
+		imgStepHistory = new ArrayList<Point2D>();
+
+		startScan();
+	}
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName className, IBinder binder) {
+			WifiScanService.MyBinder b = (WifiScanService.MyBinder) binder;
+			wifiService = b.getService();
+			Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			wifiService = null;
+		}
+	};
+
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+
+		Intent intent = new Intent(this, WifiScanService.class);
+		stopService(intent);
+		if (wifiService != null)
+			unbindService(mConnection);
+		unregisterReceiver(uiUpdated);
+		unregisterReceiver(uiUpdated_img);
 	}
 
 	@Override
@@ -266,6 +575,24 @@ public class MainActivity extends Activity {
 		super.onPause();
 		stopCamera();
 		unregisterReceiver(uiUpdated_img);
+
+		this.mWakeLock.release();
+
+		//String partCenter = mParticleCloud.getCenter();
+		//String coords[] = partCenter.split("\\s+");
+		//float new_x = Float.parseFloat(coords[0]);
+		//float new_y = Float.parseFloat(coords[1]);
+		//long tstamp = System.currentTimeMillis();
+
+		Intent intent = new Intent(this, WifiScanService.class);
+		stopService(intent);
+		PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		alarm.cancel(pintent);
+
+		mSensorManager.unregisterListener(this, rotationSensor);
+		mSensorManager.unregisterListener(this, accelerometer);
+		mSensorManager.unregisterListener(this, magnetometer);
 	}
 
 	@Override
@@ -307,6 +634,21 @@ public class MainActivity extends Activity {
 			mCamera.release();
 			mCamera = null;
 		}
+	}
+
+	public void startScan() {
+		intent = new Intent(this, WifiScanService.class);
+
+		Bundle b = new Bundle();
+		b.putInt("floor_id", 1);
+
+		intent.replaceExtras(b);
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		PendingIntent pintent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		Calendar cal = Calendar.getInstance();
+		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		// Start every 5 seconds
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5*1000, pintent); 		
 	}
 
 }

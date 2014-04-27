@@ -24,6 +24,17 @@
         android:layout_below="@+id/frameLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="0" />
+        android:text="@string/pic_count" />
+    
+    <edu.berkeley.camerademo.MapView
+      android:id="@+id/map_view"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="63dp"
+      android:layout_marginRight="1dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginTop="40dp"
+      />
 
 </RelativeLayout>

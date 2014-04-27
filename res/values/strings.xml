@@ -5,5 +5,6 @@
     <string name="camera_demo">Camera Demo</string>
     <string name="built_in">Built-in Camera App</string>
     <string name="raw_api">Raw Camera API</string>
+    <string name="pic_count">0</string>
 
 </resources>

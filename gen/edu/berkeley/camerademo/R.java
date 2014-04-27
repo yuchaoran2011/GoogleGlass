@@ -25,9 +25,10 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int built_in=0x7f090002;
+        public static final int built_in=0x7f090003;
         public static final int frameLayout=0x7f090000;
-        public static final int raw_api=0x7f090003;
+        public static final int map_view=0x7f090002;
+        public static final int raw_api=0x7f090004;
         public static final int textView2=0x7f090001;
     }
     public static final class layout {
@@ -40,6 +41,7 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int built_in=0x7f060002;
         public static final int camera_demo=0x7f060001;
+        public static final int pic_count=0x7f060004;
         public static final int raw_api=0x7f060003;
     }
     public static final class style {
