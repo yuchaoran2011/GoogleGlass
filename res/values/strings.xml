@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CameraDemo</string>
+    <string name="camera_demo">Camera Demo</string>
+    <string name="built_in">Built-in Camera App</string>
+    <string name="raw_api">Raw Camera API</string>
+
+</resources>

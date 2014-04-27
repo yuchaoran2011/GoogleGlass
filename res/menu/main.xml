@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.berkeley.camerademo.MainActivity" >
+
+    <item
+        android:id="@+id/built_in"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/built_in"/>
+    <item
+        android:id="@+id/raw_api"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/raw_api"/>
+
+</menu>
