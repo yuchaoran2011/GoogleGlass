@@ -7,34 +7,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="160dp"
-        android:layout_height="120dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" >
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/frameLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/pic_count" />
     
+    <!--
     <edu.berkeley.camerademo.MapView
       android:id="@+id/map_view"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
       android:layout_marginLeft="63dp"
       android:layout_marginRight="1dp"
       android:layout_alignParentBottom="true"
       android:layout_alignParentRight="true"
       android:layout_marginTop="40dp"
       />
+    -->
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="160dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="38dp"
+        android:layout_toLeftOf="@+id/textView2" >
+    </FrameLayout>
+
+    <edu.berkeley.camerademo.MapView
+        android:id="@+id/map_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="28dp"
+        android:layout_toRightOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/map_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:text="@string/pic_count" />
 
 </RelativeLayout>

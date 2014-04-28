@@ -478,8 +478,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 		cm = new ThreadSafeClientConnManager(params, registry);
 		httpclient = new DefaultHttpClient(cm, params);
 
-		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
-		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		rotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -528,6 +526,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 	protected void onResume() {
 		super.onResume();
 		restartCamera();
+		
+		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
 		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
 
 		mSensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -564,10 +564,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 		Intent intent = new Intent(this, WifiScanService.class);
 		stopService(intent);
-		if (wifiService != null)
-			unbindService(mConnection);
-		unregisterReceiver(uiUpdated);
-		unregisterReceiver(uiUpdated_img);
+		unbindService(mConnection);
 	}
 
 	@Override
@@ -575,6 +572,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		super.onPause();
 		stopCamera();
 		unregisterReceiver(uiUpdated_img);
+		unregisterReceiver(uiUpdated);
 
 		this.mWakeLock.release();
 
