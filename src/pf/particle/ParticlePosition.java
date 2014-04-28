@@ -40,6 +40,8 @@ public class ParticlePosition {
 	private long tLastCollision;
 	private final double mElimThr = 0.04;
 	
+	private Random randI = new Random(), randD = new Random();
+	
 	public enum ParticleGenerationMode { GAUSSIAN, UNIFORM }
 	//private ParticleGenerationMode mParticleGeneration = ParticleGenerationMode.GAUSSIAN;
 
@@ -218,7 +220,7 @@ public class ParticlePosition {
 				if (wall.intersect(trajectory)) {
 					mNumberOfParticles--;
 					if (wallCache.size() == 10) {
-						wallCache.set((new Random()).nextInt(10), wall);
+						wallCache.set(randI.nextInt(10), wall);
 					}
 					else {
 						wallCache.add(wall);
@@ -419,8 +421,7 @@ public class ParticlePosition {
 			freq.add(Double.valueOf(cumulativeFreq));
 		}
 
-		Random generator = new Random();
-		double r = generator.nextDouble();
+		double r = randD.nextDouble();
 
 		for (int i=0; i<DEFAULT_PARTICLE_COUNT; ++i) {
 			for (int j=0; j<temp.size(); ++j) {
@@ -430,7 +431,7 @@ public class ParticlePosition {
 					break;
 				}
 			}
-			r = generator.nextDouble();
+			r = randD.nextDouble();
 		}
 	}
 

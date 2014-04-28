@@ -1,14 +1,24 @@
 package edu.berkeley.camerademo;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -43,6 +53,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -63,7 +74,7 @@ import cz.muni.fi.sandbox.service.stepdetector.MovingAverageStepDetector.MovingA
 public class MainActivity extends Activity implements SensorEventListener {
 
 	private static final String TAG = "ImgLoc";
-	static final String IMAGE_URL = "http://sofia.eecs.berkeley.edu:8010";
+	static final String IMAGE_URL = "http://ahvaz.eecs.berkeley.edu:8001";//sofia.eecs.berkeley.edu:8010
 	private HttpClient httpclient;
 	ClientConnectionManager cm;
 	private Camera mCamera;
@@ -80,6 +91,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 	float[] I = new float[16];
 	private SensorManager mSensorManager;
 	private Sensor accelerometer, magnetometer;
+
+	File root = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
 
 	private MovingAverageStepDetector mStepDetector;
 	private ContinuousConvolution mCC;
@@ -106,9 +119,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private AreaBuilder mCory2Builder;
 	private Area mCory2;
 
-    //private String PATH_FILE_UPLOAD_URL = "http://10.142.32.171:8003/central/path_file";
-
-	boolean lastLineIsWiFiOrImage = false;
+	private String PATH_FILE_UPLOAD_URL = "http://10.142.34.53:8003/central/path_file";
 
 	Intent intent;
 
@@ -274,7 +285,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 					imgStepHistory.add(new Point2D(new_x,new_y));
 					mMapView.updatePos(new_x, new_y);
 
-					lastLineIsWiFiOrImage = false;
+					long tstamp = System.currentTimeMillis();
+					writeToFile("path.txt", "s" + " " + new_x + " " + new_y + " " + tstamp + " " + 0 + " " + 0 + " " + "\n");
 					cloudCenter[0] = (double)new_x;
 					cloudCenter[1] = (double)new_y;
 					if (wifiService != null)
@@ -331,15 +343,21 @@ public class MainActivity extends Activity implements SensorEventListener {
 		public void onReceive(Context context, Intent intent) {
 			Log.d("Picture", "Received image response!");
 
-			JSONObject loc_json = new JSONObject();
+			JSONObject loc_json = null;//= new JSONObject();
 			try {
 				loc_json = new JSONObject(intent.getExtras().getString("json_response"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (!intent.getExtras().getString("json_response").isEmpty() )
+			//if (!intent.getExtras().getString("json_response").isEmpty())
+			if (loc_json != null) {
 				try {
+					if (loc_json.has("error")) {
+						Toast.makeText(context, loc_json.getString("error"), Toast.LENGTH_SHORT).show();
+						return;
+					}
+
 					float new_x = Float.valueOf(loc_json.getString("local_x"));
 					float new_y = Float.valueOf(loc_json.getString("local_y"));
 					float retr_confidence = Float.valueOf(loc_json.getString("retrieval_confidence"));
@@ -373,16 +391,16 @@ public class MainActivity extends Activity implements SensorEventListener {
 						new_y = Float.parseFloat(coords[1]);
 						mMapView.updatePos(new_x, new_y);
 					}
-					lastLineIsWiFiOrImage = true;
-					
-					/*
 					long tstamp = System.currentTimeMillis();
-					String logResult = tstamp + " " + loc_json.getString("local_x") + " " + loc_json.getString("local_y")
-							+ " " +loc_json.getString("retrieval_confidence") + " " + img_x + " "  + img_y + "\n";*/
+					writeToFile("path.txt", "i " + img_x + " " + img_y + " " + tstamp + " "  + 0 + " " + 0 + "\n");
 
 				} catch (JSONException e) {
 					Toast.makeText(context, "No coordinates received", Toast.LENGTH_SHORT).show();
 				}
+			}
+			else {
+				Toast.makeText(context, "onReceive Image: Did not receive JSON", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 
@@ -404,6 +422,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 				try {
 					long t_received = intent.getExtras().getLong("t_received");
 					long t_init = intent.getExtras().getLong("t_init");
+					long t_sent = intent.getExtras().getLong("t_sent");
 
 					double confidence = Double.parseDouble(loc_json.getString("confidence"));
 
@@ -432,12 +451,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 							new_x = (float)newCoord.getX();
 							new_y = (float)newCoord.getY();
 						}
-						/*
-						long tstamp = System.currentTimeMillis();
-						String logResult = tstamp + " " + t_sent + " " + t_received + " " +old_x + " " + old_y + " -> " + new_x + " " + new_y
-								+ " " +loc_json.getString("confidence") + "\n";*/
 
-						lastLineIsWiFiOrImage = true;
+						writeToFile("path.txt", "w " + new_x + " "  + new_y + " " + t_init + " " + t_sent + " " + t_received +"\n");
 						mParticleCloud.onRssImageUpdate(5.0, new_x, new_y, confidence,"w");
 						partCenter = mParticleCloud.getCenter();
 						coords = partCenter.split("\\s+");
@@ -445,16 +460,12 @@ public class MainActivity extends Activity implements SensorEventListener {
 						new_y = Float.parseFloat(coords[1]);
 						mMapView.updatePos(new_x, new_y);
 
-					} else {		
-						lastLineIsWiFiOrImage = true;
+					} else {				
+						long tstamp = System.currentTimeMillis();
+						writeToFile("path.txt", "w " + new_x + " "  + new_y + " " +  tstamp + " " + 0 + " " + 0 + "\n");
 						String wifiResult = "Coordinates: " + new_x + " " + new_y
 								+ "\nConfidence: " +loc_json.getString("confidence");
 						Toast.makeText(context, wifiResult, Toast.LENGTH_SHORT).show();
-
-						/*
-						 long tstamp = System.currentTimeMillis();
-						 String logResult = tstamp + " "  + new_x + " " + new_y
-								+ " " +loc_json.getString("confidence") + "\n";*/
 					}		
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -519,7 +530,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 		super.onResume();
 		restartCamera();
 		restartMapView();
-		
+
 		//registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
 		//registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
 		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"), null, new Handler());
@@ -564,6 +575,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+
+		postPathFileToServer("path.txt");
+
 		stopCamera();
 		stopMapView();
 		unregisterReceiver(uiUpdated_img);
@@ -625,14 +639,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 			mCamera = null;
 		}
 	}
-	
+
 	private void restartMapView() {
 		mMapView = new MapView(this.getApplicationContext());
 		mFrameLayout2 = (FrameLayout) findViewById(R.id.frameLayout2);
 		mFrameLayout2.addView(mMapView);
 		mMapView.setKeepScreenOn(true);
 	}
-	
+
 	private void stopMapView() {
 		mFrameLayout2.removeView(mMapView);
 	}
@@ -650,5 +664,111 @@ public class MainActivity extends Activity implements SensorEventListener {
 		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		// Start every 5 seconds
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5*1000, pintent); 	
+	}
+
+	private void writeToFile(String fname, String data)  {
+
+		Log.d("Save", Environment.getExternalStorageState());
+
+		File file = new File(root, fname);
+
+		FileWriter filewriter;
+		try {
+			filewriter = new FileWriter(file,true);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			Log.d("IMGRES","Could not create file " + e1.getMessage());
+			return;
+		}
+
+		BufferedWriter out = new BufferedWriter(filewriter);
+		try {
+			out.write(data);
+			out.close();
+		} catch (IOException e) {
+			Log.d("IMGRES","Could not write to file " + e.getMessage());
+		}
+	}
+
+	private class PostToServerTask extends AsyncTask<Context, Void, Void> {
+		private String url_str;
+		private JSONObject path;
+
+		public PostToServerTask(String url, File file) {
+			this.url_str = url;
+			JSONObject pathJSON = new JSONObject();
+			FileInputStream fis = null;
+			 
+			String fileContents = null;
+			try {
+				fis = new FileInputStream(file); 
+				StringWriter writer = new StringWriter();
+				IOUtils.copy(fis, writer, "UTF-8");
+				fileContents  = writer.toString();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (fis != null)
+						fis.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}	
+			
+			try {
+				pathJSON.put("path", fileContents);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			this.path = pathJSON;
+		}
+
+		protected Void doInBackground(Context... c) {	
+			byte[] data = path.toString().getBytes();
+			try {
+				URL url = new URL(url_str);
+				HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+				try {
+					urlConnection.setReadTimeout(30000);
+					urlConnection.setConnectTimeout(30000);
+
+					urlConnection.setDoInput(true);
+					urlConnection.setDoOutput(true);
+					urlConnection.setFixedLengthStreamingMode(data.length);
+
+					urlConnection.setRequestProperty("content-type","application/json; charset=utf-8");
+					urlConnection.setRequestProperty("Accept", "application/json");
+					urlConnection.setRequestMethod("POST");
+
+					urlConnection.connect();
+					OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+
+					out.write(data);
+					Log.d("DATA", path.toString());
+					out.flush();
+					out.close();
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				finally {
+					urlConnection.disconnect();
+				}			
+			}
+			catch (MalformedURLException e){ }
+			catch (IOException e) {Log.d("URL_EXCEPTION","FAILURE! "+ e.getMessage()); }		
+			return null;
+		}
+	}
+
+
+	private void postPathFileToServer(String fname) {
+		File file = new File(root, fname);
+
+		new PostToServerTask(PATH_FILE_UPLOAD_URL, file).execute(getApplicationContext());
 	}
 }
