@@ -31,21 +31,22 @@
         android:layout_toLeftOf="@+id/textView2" >
     </FrameLayout>
 
-    <edu.berkeley.camerademo.MapView
-        android:id="@+id/map_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="28dp"
-        android:layout_toRightOf="@+id/textView2" />
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/map_view"
+        android:layout_below="@+id/frameLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="15dp"
         android:text="@string/pic_count" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="160dp"
+        android:layout_height="120dp"
+        android:layout_alignTop="@+id/frameLayout"
+        android:layout_marginLeft="36dp"
+        android:layout_toRightOf="@+id/textView2" >
+    </FrameLayout>
 
 </RelativeLayout>

@@ -27,7 +27,7 @@ public final class R {
     public static final class id {
         public static final int built_in=0x7f090003;
         public static final int frameLayout=0x7f090000;
-        public static final int map_view=0x7f090002;
+        public static final int frameLayout2=0x7f090002;
         public static final int raw_api=0x7f090004;
         public static final int textView2=0x7f090001;
     }

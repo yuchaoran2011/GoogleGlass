@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
@@ -24,8 +23,8 @@ public class MapView extends View {
     Paint mPaint = new Paint();
     private ArrayList<String> maplines= new ArrayList<String>();
 
-    public MapView(Context context, AttributeSet attrs) {
-	    super(context,attrs);
+    public MapView(Context context) {
+	    super(context);
 	
 	    int x = 10;
 	    int y = 10;
@@ -65,6 +64,10 @@ public class MapView extends View {
     
     protected void onDraw(Canvas canvas) {
     	
+    	float SCALE = 0.25f;
+    	float X_SHIFT = 3f;
+    	float Y_SHIFT = 39f;
+    	
     	int height = this.getBottom()-this.getTop();
     	canvas.scale(15.0f, 15.0f);
     	//height /=3;
@@ -72,21 +75,20 @@ public class MapView extends View {
     	Log.d("MAPVIEW","Height is: " + height);
     	canvas.scale(1,-1);    // invert
 
-	    mPaint.setARGB(150, 000, 000, 000);
+	    mPaint.setARGB(150, 255, 255, 255);
 	    mPaint.setAntiAlias(true);
-	    //mDrawable.draw(canvas);
 	  
 	    for (String mapline : maplines) {
 	    	String[] coords = mapline.split("\\s+");
-	    	canvas.drawLine(Float.valueOf(coords[0])*0.3f+10.0f,
-	    					Float.valueOf(coords[1])*0.3f+38.0f,
-	    					Float.valueOf(coords[2])*0.3f+10.0f, 
-	    					Float.valueOf(coords[3])*0.3f+38.0f, 
+	    	canvas.drawLine(Float.valueOf(coords[0])*SCALE+X_SHIFT,
+	    					Float.valueOf(coords[1])*SCALE+Y_SHIFT,
+	    					Float.valueOf(coords[2])*SCALE+X_SHIFT, 
+	    					Float.valueOf(coords[3])*SCALE+Y_SHIFT, 
 	    					mPaint);
 	    }
 	    this.gotPosition = true;
 	    mPaint.setARGB(255, 000, 000, 255);
-	    if (this.gotPosition)
-	    	canvas.drawCircle(this.pos_x*0.3f+10.0f, this.pos_y*0.3f+38.0f, 0.5f, mPaint);    
+	    if (this.gotPosition)  
+	    	canvas.drawCircle(this.pos_x*SCALE+X_SHIFT, this.pos_y*SCALE+Y_SHIFT, 0.5f, mPaint);  
 	}
 }

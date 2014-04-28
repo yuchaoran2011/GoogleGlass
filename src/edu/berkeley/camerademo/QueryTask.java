@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -28,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
+import android.util.SparseArray;
 
 public class QueryTask extends AsyncTask<Context, Void, Void> 
 {
@@ -37,7 +37,7 @@ public class QueryTask extends AsyncTask<Context, Void, Void>
 	private byte[] imgData;
 	public String result;
 	private Point2D oldLoc;
-	HashMap<Integer,long[]> wifiRequests;
+	SparseArray<long[]> wifiRequests;
 
 	public QueryTask(String url, JSONObject json, String qryType) {
 		this.url_str = url;
@@ -57,7 +57,7 @@ public class QueryTask extends AsyncTask<Context, Void, Void>
 		this.oldLoc = oldLoc;
 	}
 
-	public QueryTask(String url, JSONObject json, String qryType, HashMap<Integer,long[]> wifiRequests) {
+	public QueryTask(String url, JSONObject json, String qryType, SparseArray<long[]> wifiRequests) {
 		this(url,json,qryType);
 		this.wifiRequests = wifiRequests;
 	}

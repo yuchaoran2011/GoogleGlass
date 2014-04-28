@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 class ScanComparable implements Comparator<ScanResult> {
@@ -45,7 +46,7 @@ public class WifiScanService extends Service {
 	Point2D wifiPos;
 	ArrayList<Point2D> cloudPos;
 	ArrayList<Step> stepHistory;
-	HashMap<Integer,long[]> wifiRequests;
+	SparseArray<long[]> wifiRequests;
 	public void writeToFile(String data)  {
 		File root = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
 
@@ -99,7 +100,7 @@ public class WifiScanService extends Service {
 
 				QueryTask qr;
 
-				if (!wifiRequests.containsKey(requestId))
+				if (wifiRequests.get(requestId) == null)
 					Log.d("REQMIS", "ALERT: " + requestId + " " + wifiRequests.size());
 				else {
 					long[] ts = wifiRequests.get(requestId);
@@ -121,6 +122,7 @@ public class WifiScanService extends Service {
 		registerReceiver(receiverWifi, filter);
 		cloudPos = new ArrayList<Point2D>();
 		stepHistory = new ArrayList<Step>();
+		wifiRequests = new SparseArray<long[]>();
 	}
 
 	@Override

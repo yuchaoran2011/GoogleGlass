@@ -45,8 +45,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	private HttpClient httpclient;
 	ClientConnectionManager cm;
 	private Camera mCamera;
-	private FrameLayout mFrameLayout;
+	private FrameLayout mFrameLayout, mFrameLayout2;
 	private CameraPreview mPreview;
 	private TextView textview;
 	private int numPictureTaken = 0;
@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 	float[] inR = new float[16];
 	float[] I = new float[16];
 	private SensorManager mSensorManager;
-	private Sensor rotationSensor, accelerometer, magnetometer;
+	private Sensor accelerometer, magnetometer;
 
 	private MovingAverageStepDetector mStepDetector;
 	private ContinuousConvolution mCC;
@@ -102,8 +102,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 	double highPowerCutoff = MovingAverageStepDetector.HIGH_POWER_CUTOFF_VALUE;
 
 	private int mMASize = 20;
-
-	protected PowerManager.WakeLock mWakeLock;
 
 	private AreaBuilder mCory2Builder;
 	private Area mCory2;
@@ -412,6 +410,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 					String loc[] = loc_json.getString("location").split("\\s");
 					float new_x = Float.valueOf(loc[0]);
 					float new_y = Float.valueOf(loc[1]);
+					Log.d(TAG, new_x + " " + new_y);
 
 					float old_x = new_x;
 					float old_y = new_y;
@@ -464,13 +463,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 	};
 
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		textview = (TextView)findViewById(R.id.textView2);
-		mMapView = (MapView)findViewById(R.id.map_view);
 
 		HttpParams params = new BasicHttpParams();
 		SchemeRegistry registry = new SchemeRegistry();
@@ -479,13 +476,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 		httpclient = new DefaultHttpClient(cm, params);
 
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-		rotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-		final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Stay awake!");
-		this.mWakeLock.acquire();
 
 		mStepDetector = new MovingAverageStepDetector(movingAverage1, movingAverage2, lowPowerCutoff, highPowerCutoff);
 
@@ -526,11 +518,13 @@ public class MainActivity extends Activity implements SensorEventListener {
 	protected void onResume() {
 		super.onResume();
 		restartCamera();
+		restartMapView();
 		
-		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
-		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
+		//registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
+		//registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
+		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"), null, new Handler());
+		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"), null, new Handler());
 
-		mSensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
 		mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
 		mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_FASTEST);
 
@@ -571,10 +565,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 	protected void onPause() {
 		super.onPause();
 		stopCamera();
+		stopMapView();
 		unregisterReceiver(uiUpdated_img);
 		unregisterReceiver(uiUpdated);
-
-		this.mWakeLock.release();
 
 		//String partCenter = mParticleCloud.getCenter();
 		//String coords[] = partCenter.split("\\s+");
@@ -588,7 +581,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		alarm.cancel(pintent);
 
-		mSensorManager.unregisterListener(this, rotationSensor);
 		mSensorManager.unregisterListener(this, accelerometer);
 		mSensorManager.unregisterListener(this, magnetometer);
 	}
@@ -633,6 +625,17 @@ public class MainActivity extends Activity implements SensorEventListener {
 			mCamera = null;
 		}
 	}
+	
+	private void restartMapView() {
+		mMapView = new MapView(this.getApplicationContext());
+		mFrameLayout2 = (FrameLayout) findViewById(R.id.frameLayout2);
+		mFrameLayout2.addView(mMapView);
+		mMapView.setKeepScreenOn(true);
+	}
+	
+	private void stopMapView() {
+		mFrameLayout2.removeView(mMapView);
+	}
 
 	public void startScan() {
 		intent = new Intent(this, WifiScanService.class);
@@ -646,7 +649,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 		Calendar cal = Calendar.getInstance();
 		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		// Start every 5 seconds
-		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5*1000, pintent); 		
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5*1000, pintent); 	
 	}
-
 }
