@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class GridPoint2D implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5723246815544087968L;
 	public int x, y;
 	
 	public GridPoint2D () {
