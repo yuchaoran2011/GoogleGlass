@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Rectangle implements Serializable{
 	
-	private static final long serialVersionUID = -1021844285882685684L;
+	// private static final String TAG = "Rectangle";
 	public double left, right, top, bottom;
 	private Line2D leftSide, rightSide, topSide, bottomSide;
 

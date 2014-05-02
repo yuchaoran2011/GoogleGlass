@@ -1,6 +1,9 @@
 package pf.particle;
 
+import java.util.Arrays;
+
 import pf.distr.NormalDistribution;
+
 
 public class Particle implements Cloneable {
 

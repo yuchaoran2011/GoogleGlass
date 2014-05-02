@@ -5,8 +5,6 @@ import java.io.Serializable;
 
 public class Line2D implements Serializable {
 
-	private static final long serialVersionUID = 5451758368332077370L;
-
 	private Point2D start, end;
 	
 	// precompute intersection expressions

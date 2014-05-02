@@ -1,52 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
-    
-    <!--
-    <edu.berkeley.camerademo.MapView
-      android:id="@+id/map_view"
-      android:layout_width="100dp"
-      android:layout_height="100dp"
-      android:layout_marginLeft="63dp"
-      android:layout_marginRight="1dp"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentRight="true"
-      android:layout_marginTop="40dp"
-      />
-    -->
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="160dp"
-        android:layout_height="120dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="38dp"
-        android:layout_toLeftOf="@+id/textView2" >
-    </FrameLayout>
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:screenOrientation="portrait"
+    tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvSensor"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/frameLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/pic_count" />
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="1dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="16sp" />
 
     <FrameLayout
-        android:id="@+id/frameLayout2"
+        android:id="@+id/frameLayoutCam"
         android:layout_width="160dp"
         android:layout_height="120dp"
-        android:layout_alignTop="@+id/frameLayout"
-        android:layout_marginLeft="36dp"
-        android:layout_toRightOf="@+id/textView2" >
+        android:layout_alignLeft="@+id/tvSensor"
+        android:layout_centerVertical="true" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutMap"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_alignRight="@+id/tvSensor"
+        android:layout_below="@+id/tvSensor" >
     </FrameLayout>
 
 </RelativeLayout>

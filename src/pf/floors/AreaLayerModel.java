@@ -17,6 +17,9 @@ import pf.utils.RectangleGrid;
 
 public class AreaLayerModel implements Serializable {
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 8009058121739800863L;
 	private Set<Line2D> completeSet, workingSet, displaySet;
 	private static final Set<Line2D> emptySet = new HashSet<Line2D>();

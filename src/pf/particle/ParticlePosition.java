@@ -31,6 +31,7 @@ public class ParticlePosition {
 	private static final int DEFAULT_PARTICLE_COUNT = 100;
 	private static final double DEFAULT_WEIGHT = 1.0;
 
+	private double mPositionSigma = 1.0f;
 	private int mNumberOfParticles;
 
 	private ArrayList<Line2D> wallCache;
@@ -40,10 +41,8 @@ public class ParticlePosition {
 	private long tLastCollision;
 	private final double mElimThr = 0.04;
 	
-	private Random randI = new Random(), randD = new Random();
-	
 	public enum ParticleGenerationMode { GAUSSIAN, UNIFORM }
-	//private ParticleGenerationMode mParticleGeneration = ParticleGenerationMode.GAUSSIAN;
+	private ParticleGenerationMode mParticleGeneration = ParticleGenerationMode.GAUSSIAN;
 
 
 	public ParticlePosition(double posX, double posY) {
@@ -124,10 +123,10 @@ public class ParticlePosition {
 				System.out.println("All particles collided with walls and none was left!");
 				System.out.println("Generating new particles at most recent valid position! ");
 				long currTime = System.currentTimeMillis();
-				//boolean regenAtWifi = false;
-				boolean repeatedCollision = false;
+				double sigmaFactor = 1.0;
+				boolean regenAtWifi = false;
 				if (currTime-tLastCollision <= 1000) {
-					repeatedCollision = true;
+					sigmaFactor = 6.0;
 					System.out.println("CONSECUTIVE COLLISIONS!!!");
 				}
 				tLastCollision = currTime;
@@ -136,26 +135,12 @@ public class ParticlePosition {
 				//Point2D lastWifi = wifiHist.get(wifiHist.size()-1);
 				Point2D cloudCenter = new Point2D(mCloudAverageState[0], mCloudAverageState[1]);
 				System.out.println("Generating at: " + cloudCenter.toString());
-				//int closestToCloud = cloudCenter.findClosestPoint(wifiDbCoords);
-				
-				// Generate two concentric circles
-				if (repeatedCollision) {
-					particles.clear();
-					
-					for (int i=0; i<DEFAULT_PARTICLE_COUNT/2; i++) {
-						particles.add(Particle.polarNormalDistr(mCloudAverageState[0], mCloudAverageState[1], 5.0, DEFAULT_WEIGHT));
-						particles.add(Particle.polarNormalDistr(mCloudAverageState[0], mCloudAverageState[1], 10.0, DEFAULT_WEIGHT));
-					}
-				}
-				
-				
+				int closestToCloud = cloudCenter.findClosestPoint(wifiDbCoords);
 				//int closestToWifi = lastWifi.findClosestPoint(wifiDbCoords);
 				
 				//double lastWifi_x = lastWifi.getX();
 				//double lastWifi_y = lastWifi.getY();
 				//double lastWifi_confidence = wifiHist.get(wifiHist.size()-1).getExtraData();
-				
-				/*
 				while (numberOfParticles > 0) {
 					//if (regenAtWifi)
 					//	particles.add(Particle.polarNormalDistr(lastWifi_x, lastWifi_y, 2.0, DEFAULT_WEIGHT));
@@ -163,7 +148,6 @@ public class ParticlePosition {
 					particles.add(Particle.polarNormalDistr(mCloudAverageState[0], mCloudAverageState[1], 5.0, DEFAULT_WEIGHT));
 					numberOfParticles--;	
 				}	
-				*/
 				mNumberOfParticles = DEFAULT_PARTICLE_COUNT;
 				computeCloudAverageState();
 				removeInvalidParticles(mCloudAverageState[0], mCloudAverageState[1]);
@@ -200,7 +184,8 @@ public class ParticlePosition {
 
 
 	private Particle updateParticle(Particle particle, double hdg, double length) {
-		
+		Random ran = new Random();
+
 		// Gaussian noise: http://www.javamex.com/tutorials/random_numbers/gaussian_distribution_2.shtml
 		double deltaX = length * Math.sin(Math.toRadians(hdg)); //+ ran.nextGaussian() * 0.4;
 		double deltaY = length * Math.cos(Math.toRadians(hdg)); //+ ran.nextGaussian() * 0.4;
@@ -220,7 +205,7 @@ public class ParticlePosition {
 				if (wall.intersect(trajectory)) {
 					mNumberOfParticles--;
 					if (wallCache.size() == 10) {
-						wallCache.set(randI.nextInt(10), wall);
+						wallCache.set((new Random()).nextInt(10), wall);
 					}
 					else {
 						wallCache.add(wall);
@@ -365,7 +350,7 @@ public class ParticlePosition {
 		for (int i = 0; i < 2; i++) {
 			prevCloudAverageState[i] = mCloudAverageState[i];
 		}
-		//Collection<Line2D> walls = mArea.getWallsModel().getWalls();
+		Collection<Line2D> walls = mArea.getWallsModel().getWalls();
 		mCloudAverageState[0] = mCloudAverageState[1] = 0.0;
 		int totalWeight = 0;
 		for (Particle particle : particles) {
@@ -418,10 +403,11 @@ public class ParticlePosition {
 		double cumulativeFreq = 0;
 		for (int i=0; i<temp.size(); ++i) {
 			cumulativeFreq += temp.get(i).getWeight() / sum;
-			freq.add(Double.valueOf(cumulativeFreq));
+			freq.add(new Double(cumulativeFreq));
 		}
 
-		double r = randD.nextDouble();
+		Random generator = new Random();
+		double r = generator.nextDouble();
 
 		for (int i=0; i<DEFAULT_PARTICLE_COUNT; ++i) {
 			for (int j=0; j<temp.size(); ++j) {
@@ -431,7 +417,7 @@ public class ParticlePosition {
 					break;
 				}
 			}
-			r = randD.nextDouble();
+			r = generator.nextDouble();
 		}
 	}
 
@@ -460,6 +446,8 @@ public class ParticlePosition {
 	}
 	
 	public void readCoords(AssetManager am, String filename) {
+
+	    ArrayList<String> maplines= new ArrayList<String>();
 
 	    InputStream inputStream = null;
         try {

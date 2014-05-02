@@ -8,7 +8,10 @@ import pf.utils.Line2D;
 import pf.utils.Rectangle;
 
 public class Area implements Serializable {
-
+	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -2856668274097417053L;
 
 	protected AreaLayerModel mWallsModel;

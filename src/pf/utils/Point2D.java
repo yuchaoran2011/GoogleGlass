@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Point2D implements Serializable {
 	
-	private static final long serialVersionUID = -3487093339625202184L;
 	double x, y, extraData;
 	// private int precision = 1000000;
 	
