@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	File root = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
 	
 	private SensorManager mSensorManager;
-	private Sensor rotationSensor, accelerometer, magnetometer;
+	private Sensor accelerometer, magnetometer;
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	private TextView mTextView;
@@ -379,7 +379,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 		
-		rotationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
@@ -449,8 +448,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		alarm.cancel(pintent);
 		
 		stopCamera();
-		
-		mSensorManager.unregisterListener(this, rotationSensor);
+
 		mSensorManager.unregisterListener(this, accelerometer);
 		mSensorManager.unregisterListener(this, magnetometer);
 	}
@@ -467,7 +465,6 @@ public class MainActivity extends Activity implements SensorEventListener{
 		mFrameLayoutMap = (FrameLayout) findViewById(R.id.frameLayoutMap);
 		mFrameLayoutMap.addView(mMapView);
 
-		mSensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_GAME);
 		mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
 		mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
 
