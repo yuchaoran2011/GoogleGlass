@@ -12,11 +12,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import pf.floors.Area;
 import pf.floors.AreaLayerModel;
 import pf.floors.EmptyArea;
 import pf.utils.Line2D;
+import pf.utils.Parallel;
 import pf.utils.Point2D;
 import android.content.res.AssetManager;
 import android.os.Environment;
@@ -28,7 +30,7 @@ public class ParticlePosition {
 	private Area mArea;
 	private double[] mCloudAverageState;
 
-	private static final int DEFAULT_PARTICLE_COUNT = 100;
+	private static final int DEFAULT_PARTICLE_COUNT = 10000;
 	private static final double DEFAULT_WEIGHT = 1.0;
 
 	private int mNumberOfParticles;
@@ -39,7 +41,7 @@ public class ParticlePosition {
 	private ArrayList<Point2D> wifiDbCoords;
 	private long tLastCollision;
 	private final double mElimThr = 0.04;
-	
+
 	public enum ParticleGenerationMode { GAUSSIAN, UNIFORM }
 	//private ParticleGenerationMode mParticleGeneration = ParticleGenerationMode.GAUSSIAN;
 
@@ -47,20 +49,61 @@ public class ParticlePosition {
 	public ParticlePosition(double posX, double posY) {
 		this(posX, posY, 1.0);
 	}
-	
+
 	public ParticlePosition(double posX, double posY, Area area) {
 		this(posX, posY, 1.0);
 		this.setArea(area);
 		removeInvalidParticles(posX, posY);
 	}
 
-	public ParticlePosition(double x, double y, double sigma) {
+	public ParticlePosition(double x, double y, double sigma) {	
+			
 		int numberOfParticles = DEFAULT_PARTICLE_COUNT;
-		particles = new HashSet<Particle>(numberOfParticles);
-		while (numberOfParticles > 0) {
-			particles.add(Particle.polarNormalDistr(x, y, 0.5, DEFAULT_WEIGHT));
-			numberOfParticles--;
+		
+		long avgTime = 0;
+		for (int k=0; k<100; ++k) {
+			long start = System.currentTimeMillis();
+			numberOfParticles = DEFAULT_PARTICLE_COUNT;
+			particles = new HashSet<Particle>(numberOfParticles);
+			while (numberOfParticles > 0) {
+				particles.add(Particle.polarNormalDistr(x, y, 0.5, DEFAULT_WEIGHT));
+				numberOfParticles--;
+			}
+			long end = System.currentTimeMillis();
+			long dur = end - start;
+			avgTime += dur;
+			Log.d("Parallel", "Serial each time: " + dur);
 		}
+		avgTime = avgTime / 100;
+		Log.d("Parallel", Double.toString(avgTime));
+		Log.d("Parallel", "# Particles: " + particles.size());
+		 
+
+		/*
+		long avgTime = 0;
+		for (int k=0; k<100; ++k) {
+			long start = System.currentTimeMillis();
+			try {
+				particles = Parallel.parGenParticles(DEFAULT_PARTICLE_COUNT, x, y, DEFAULT_WEIGHT);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			long end = System.currentTimeMillis();
+			long dur = end - start;
+			Log.d("Parallel", "Total: " + dur);
+			avgTime += dur;
+		}
+		avgTime = avgTime / 100;
+		Log.d("Parallel", Double.toString(avgTime));
+		*/
+		
+		Log.d("Parallel", "# Particles: " + particles.size());
+		
+
 		mArea = new EmptyArea();
 		mCloudAverageState = new double[2];
 		mCloudAverageState[0] = x;
@@ -69,7 +112,6 @@ public class ParticlePosition {
 		wifiHist = new ArrayList<Point2D>();
 		wifiDbCoords = new ArrayList<Point2D>();
 		tLastCollision = 0;
-		
 	}
 
 
@@ -134,7 +176,7 @@ public class ParticlePosition {
 				System.out.println("Generating at: " + cloudCenter.toString());
 				//int closestToCloud = cloudCenter.findClosestPoint(wifiDbCoords);
 				//int closestToWifi = lastWifi.findClosestPoint(wifiDbCoords);
-				
+
 				//double lastWifi_x = lastWifi.getX();
 				//double lastWifi_y = lastWifi.getY();
 				//double lastWifi_confidence = wifiHist.get(wifiHist.size()-1).getExtraData();
@@ -159,18 +201,18 @@ public class ParticlePosition {
 		for (Particle p : particles) {
 			Line2D l1 = new Line2D(15.0, 15.0, p.getX(), p.getY());
 			int nIntersect = 0;
-			
+
 			for (Line2D l2 : walls) 
 				if (l2.intersect(l1))  {
 					nIntersect++;
-					}
-					
+				}
+
 			if (nIntersect%2 == 0) {
 				bad.add(p);
 				mNumberOfParticles--;
-				}	
+			}	
 		}
-		
+
 		System.out.println(particles.size() + " start particles remain.");
 		particles.removeAll(bad);
 		System.out.println(bad.size() + " new particles were removed because they are in invalid regions!");
@@ -216,7 +258,7 @@ public class ParticlePosition {
 	public Point2D getShiftedCoord(double pt_x, double pt_y, double oldCloud_x, double oldCloud_y) {
 		computeCloudAverageState();
 		double x_coeff, y_coeff;
-		
+
 		x_coeff = 1.0;
 		y_coeff = 1.0;
 		Line2D trajectory = new Line2D(oldCloud_x,oldCloud_y, mCloudAverageState[0], mCloudAverageState[1]);
@@ -224,7 +266,7 @@ public class ParticlePosition {
 			x_coeff = -1.0;
 			y_coeff = -1.0;
 		}
-		
+
 		double trajSlope = trajectory.slope();
 		double trajLength = trajectory.length();
 		double trajCos = 1/Math.sqrt(1+trajSlope*trajSlope);
@@ -239,7 +281,7 @@ public class ParticlePosition {
 		//									new Point2D(new_x, new_y));
 		//Log.d("VALID POINT: ",  validPoint.toString() + "; " + pt_x + " " + pt_y + " " + new_x + " " + new_y);
 		//return validPoint;
-		}
+	}
 
 	public void onRssImageUpdate(double sigma, double x, double y, double confidence, String type) {
 		//System.out.println("onRssImageUpdate()");
@@ -253,7 +295,7 @@ public class ParticlePosition {
 			while (numberOfParticles > 0) {
 				particles.add(Particle.polarNormalDistr(x, y, sigma, DEFAULT_WEIGHT));
 				numberOfParticles--;	
-				}	
+			}	
 			mNumberOfParticles = DEFAULT_PARTICLE_COUNT;
 		}
 		else {
@@ -274,7 +316,7 @@ public class ParticlePosition {
 			}
 			//writeToFile("particles.txt", "LIVING PARTICLES " + living.size()+  "\n");
 			if (living.size() > mElimThr * particles.size()) {
-			
+
 				particles.clear();
 				particles.addAll(living);
 				System.out.println(particles.size());
@@ -288,21 +330,21 @@ public class ParticlePosition {
 				particles.clear();
 				int numberOfParticles = DEFAULT_PARTICLE_COUNT;
 				particles = new HashSet<Particle>(numberOfParticles);
-				
+
 				if (type.equals("i")) {
 					Point2D newCoord = getValidPoint(new Point2D(x,y), new Point2D(mCloudAverageState[0],mCloudAverageState[1]));
 					x = newCoord.getX();
 					y = newCoord.getY();
 				}
-				
+
 				while (numberOfParticles > 0) {
 					particles.add(Particle.polarNormalDistr(x, y, 5.0, DEFAULT_WEIGHT));
 					numberOfParticles--;	
 				}	
 				mNumberOfParticles = DEFAULT_PARTICLE_COUNT;
-				
+
 				removeInvalidParticles(x,y);
-				
+
 			}
 		}	
 		computeCloudAverageState();
@@ -312,12 +354,12 @@ public class ParticlePosition {
 	public Point2D getValidPoint(Point2D newCoord, Point2D oldCoord) {
 		//Collection<Line2D> walls = mArea.getWallsModel().getWalls();
 		Line2D trajectory = new Line2D(newCoord.getX(), newCoord.getY(),
-										oldCoord.getX(), oldCoord.getY());
+				oldCoord.getX(), oldCoord.getY());
 		while (!isInterior(newCoord)) {
 			newCoord.set((newCoord.getX()+oldCoord.getX())/2, (newCoord.getY()+oldCoord.getY())/2);
 			trajectory.setCoords(newCoord.getX(), newCoord.getY(),
 					oldCoord.getX(), oldCoord.getY());
-			}
+		}
 		/*outer:
 		for (Line2D wall : walls) {
 			while (wall.intersect(trajectory)) {
@@ -338,7 +380,7 @@ public class ParticlePosition {
 			if (wall.intersect(ray))
 				nIntersect++;
 		}
-		
+
 		return (nIntersect%2 > 0);
 	}
 	private void computeCloudAverageState() {
@@ -427,7 +469,7 @@ public class ParticlePosition {
 		return mCloudAverageState[0] + " " + mCloudAverageState[1];
 	}
 
-	
+
 	public double getPrecision() {
 		double sdX = 0.0;
 		double sdY = 0.0;
@@ -439,39 +481,39 @@ public class ParticlePosition {
 		sdY = Math.sqrt(sdY / particles.size());
 		return Math.max(sdX, sdY);
 	}
-	
+
 	public void readCoords(AssetManager am, String filename) {
 
-	    InputStream inputStream = null;
-        try {
-        	inputStream = am.open(filename);   
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		InputStream inputStream = null;
+		try {
+			inputStream = am.open(filename);   
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	    
-    	BufferedReader fis = new BufferedReader(new InputStreamReader(inputStream));
-    	String sCurrentLine;
-    	try {
+
+		BufferedReader fis = new BufferedReader(new InputStreamReader(inputStream));
+		String sCurrentLine;
+		try {
 			while ((sCurrentLine = fis.readLine()) != null) {
 				String[] tmp;
 				tmp = sCurrentLine.split("\\s+");
 				wifiDbCoords.add(new Point2D(Double.parseDouble(tmp[0]),
-											Double.parseDouble(tmp[1])));
+						Double.parseDouble(tmp[1])));
 			}
 			fis.close();
-			} catch (IOException e) {
-				Log.d("PPOS","Could not read coords file " + e.getMessage());
-				return;
-			}
-
+		} catch (IOException e) {
+			Log.d("PPOS","Could not read coords file " + e.getMessage());
+			return;
 		}
-	
+
+	}
+
 	public void writeToFile(String fname, String data)  {
 		File root = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
-	   
-	    File file = new File(root, fname);
-	    FileWriter filewriter;
+
+		File file = new File(root, fname);
+		FileWriter filewriter;
 		try {
 			filewriter = new FileWriter(file,true);
 		} catch (IOException e1) {
@@ -479,14 +521,14 @@ public class ParticlePosition {
 			Log.d("IMGRES","Could not create file " + e1.getMessage());
 			return;
 		}
-	     
-	    BufferedWriter out = new BufferedWriter(filewriter);
-			try {
+
+		BufferedWriter out = new BufferedWriter(filewriter);
+		try {
 			out.write(data);
 			out.close();
-			} catch (IOException e)
-			{
+		} catch (IOException e)
+		{
 			Log.d("IMGRES","Could not write to file " + e.getMessage());
-			}
+		}
 	}
 }

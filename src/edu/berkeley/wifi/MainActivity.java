@@ -73,9 +73,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 	static final String IMAGE_URL = "http://sofia.eecs.berkeley.edu:8010";
 	private final int IMWIDTH = 640;
 	private final int IMHEIGHT = 480;
-	
+
 	File root = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
-	
+
 	private SensorManager mSensorManager;
 	private Sensor accelerometer, magnetometer;
 	private Camera mCamera;
@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	private ParticlePosition mParticleCloud;
 	private AreaBuilder mCory2Builder;
 	private Area mCory2;
-	
+
 	String imgFile;
 	float[] inR = new float[16];
 	float[] I = new float[16];
@@ -124,10 +124,10 @@ public class MainActivity extends Activity implements SensorEventListener{
 	double[] cloudCenter;
 	Intent intent;
 	private WifiScanService wifiService;
-	
+
 	private HttpClient httpclient;
 	ClientConnectionManager cm;
-	
+
 	private final Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
 
 		@Override
@@ -289,7 +289,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 
 					double currHeading = (double)azimuth;
 					//if (Math.abs(roll) > 90)
-						//	currHeading = (currHeading+540)%360;
+					//	currHeading = (currHeading+540)%360;
 					mTextView.setText("Heading: " + currHeading);
 
 					long currTime = System.currentTimeMillis();
@@ -316,7 +316,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 			}
 		}
 	}
-	
+
 	// The method below is required by the SensorEventListener interface;
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {    
 	}
@@ -361,7 +361,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 				float azimuth = orientVals[0]*rad2deg;
 				float pitch = orientVals[1]*rad2deg;
 				float roll = orientVals[2]*rad2deg;
-				*/
+				 */
 			}
 		}
 	}
@@ -369,16 +369,17 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		//Card card = new Card(this);
 		//card.setText("WiFi");
 		//card.setFootnote("indoor localizaion");
-
 		//setContentView(card.toView());
+		
 		setContentView(R.layout.activity_main);
 		registerReceiver(uiUpdated, new IntentFilter("LOCATION_UPDATED"));
 		registerReceiver(uiUpdated_img, new IntentFilter("IMG_LOCATION_UPDATED"));
 		mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-		
+
 		accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
@@ -387,13 +388,13 @@ public class MainActivity extends Activity implements SensorEventListener{
 		mCC = new ContinuousConvolution(new SinXPiWindow(mMASize));
 		freqCounter = new FrequencyCounter(20);
 		cloudCenter = new double[2]; 
-		
+
 		HttpParams params = new BasicHttpParams();
 		SchemeRegistry registry = new SchemeRegistry();
 		registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 8010));
 		cm = new ThreadSafeClientConnManager(params, registry);
 		httpclient = new DefaultHttpClient(cm, params);
-		
+
 		File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"wifiloc");
 		if (directory.exists())
 			deleteRecursive(directory);
@@ -429,8 +430,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 		super.onDestroy();
 		Intent intent = new Intent(this, WifiScanService.class);
 		stopService(intent);
-		if (wifiService != null)
+		if (wifiService != null) {
 			unbindService(mConnection);
+		}
 		unregisterReceiver(uiUpdated);
 		unregisterReceiver(uiUpdated_img);
 	}
@@ -438,7 +440,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	@Override
 	public void onPause(){
 		super.onPause();
-		
+
 		postPathFileToServer("path.txt");
 
 		Intent intent = new Intent(this, WifiScanService.class);
@@ -446,7 +448,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
 		AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		alarm.cancel(pintent);
-		
+
 		stopCamera();
 
 		mSensorManager.unregisterListener(this, accelerometer);
@@ -458,9 +460,9 @@ public class MainActivity extends Activity implements SensorEventListener{
 		super.onResume();
 		restartCamera();
 		writeToFile("wifiscan.txt","*** NEW LOCATION ***\n");
-		
+
 		mTextView = (TextView) findViewById(R.id.tvSensor);
-		
+
 		mMapView = new MapView(this.getApplicationContext());
 		mFrameLayoutMap = (FrameLayout) findViewById(R.id.frameLayoutMap);
 		mFrameLayoutMap.addView(mMapView);
@@ -531,7 +533,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 			return super.onKeyDown(keyCode, event);
 		}
 	}
-	
+
 	public void imgLocalize() {
 		Context context = getBaseContext();
 		Toast.makeText(context, "Taking picture", Toast.LENGTH_SHORT).show();
@@ -563,8 +565,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 					float new_x = Float.valueOf(loc[0]);
 					float new_y = Float.valueOf(loc[1]);
 					Log.d("WIFI",new_x + " " + new_y);
-					
-					
+
+
 					float old_x = new_x;
 					float old_y = new_y;
 
@@ -731,7 +733,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 			mCamera = null;
 		}
 	}
-	
+
 	private void writeToFile(String fname, String data)  {
 
 		File file = new File(root, fname);
@@ -762,7 +764,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 			this.url_str = url;
 			JSONObject pathJSON = new JSONObject();
 			FileInputStream fis = null;
-			 
+
 			String fileContents = null;
 			try {
 				fis = new FileInputStream(file); 
@@ -780,7 +782,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 					ex.printStackTrace();
 				}
 			}	
-			
+
 			try {
 				pathJSON.put("path", fileContents);
 			}
