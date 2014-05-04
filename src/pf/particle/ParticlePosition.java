@@ -12,13 +12,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import pf.floors.Area;
 import pf.floors.AreaLayerModel;
 import pf.floors.EmptyArea;
 import pf.utils.Line2D;
-import pf.utils.Parallel;
 import pf.utils.Point2D;
 import android.content.res.AssetManager;
 import android.os.Environment;
@@ -30,7 +28,7 @@ public class ParticlePosition {
 	private Area mArea;
 	private double[] mCloudAverageState;
 
-	private static final int DEFAULT_PARTICLE_COUNT = 10000;
+	private static final int DEFAULT_PARTICLE_COUNT = 100;
 	private static final double DEFAULT_WEIGHT = 1.0;
 
 	private int mNumberOfParticles;
@@ -41,6 +39,8 @@ public class ParticlePosition {
 	private ArrayList<Point2D> wifiDbCoords;
 	private long tLastCollision;
 	private final double mElimThr = 0.04;
+	
+	private static final int numIter = 1;
 
 	public enum ParticleGenerationMode { GAUSSIAN, UNIFORM }
 	//private ParticleGenerationMode mParticleGeneration = ParticleGenerationMode.GAUSSIAN;
@@ -58,33 +58,43 @@ public class ParticlePosition {
 
 	public ParticlePosition(double x, double y, double sigma) {	
 			
+		/*
+		 * Uncomment this section to enable serial code
+		 */
 		int numberOfParticles = DEFAULT_PARTICLE_COUNT;
 		
-		long avgTime = 0;
-		for (int k=0; k<100; ++k) {
-			long start = System.currentTimeMillis();
+		//long avgTime = 0;
+		for (int k=0; k<numIter; ++k) {
+			//long start = System.currentTimeMillis();
 			numberOfParticles = DEFAULT_PARTICLE_COUNT;
 			particles = new HashSet<Particle>(numberOfParticles);
 			while (numberOfParticles > 0) {
 				particles.add(Particle.polarNormalDistr(x, y, 0.5, DEFAULT_WEIGHT));
 				numberOfParticles--;
 			}
+			/*
 			long end = System.currentTimeMillis();
 			long dur = end - start;
 			avgTime += dur;
 			Log.d("Parallel", "Serial each time: " + dur);
+			*/
 		}
-		avgTime = avgTime / 100;
-		Log.d("Parallel", Double.toString(avgTime));
-		Log.d("Parallel", "# Particles: " + particles.size());
-		 
+		//avgTime = avgTime / numIter;
+		//Log.d("Parallel", Double.toString(avgTime));
+		//Log.d("Parallel", "# Particles: " + particles.size());
+		
 
+		/**
+		 * Comment out this section to disable parallel code. Note that one of parallel and serial 
+		 * sections , but not both, must be enabled for the app to load.
+		 */
 		/*
 		long avgTime = 0;
-		for (int k=0; k<100; ++k) {
+		for (int k=0; k<numIter; ++k) {
 			long start = System.currentTimeMillis();
 			try {
-				particles = Parallel.parGenParticles(DEFAULT_PARTICLE_COUNT, x, y, DEFAULT_WEIGHT);
+				//particles = Parallel.parGenParticles(DEFAULT_PARTICLE_COUNT, x, y, DEFAULT_WEIGHT);
+				particles = new HashSet<Particle>(Parallel.parGenParticles(DEFAULT_PARTICLE_COUNT, x, y, DEFAULT_WEIGHT));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,16 +104,15 @@ public class ParticlePosition {
 			}
 			long end = System.currentTimeMillis();
 			long dur = end - start;
-			Log.d("Parallel", "Total: " + dur);
+			//Log.d("Parallel", "Total: " + dur);
 			avgTime += dur;
 		}
-		avgTime = avgTime / 100;
+		avgTime = avgTime / numIter;
 		Log.d("Parallel", Double.toString(avgTime));
+		Log.d("Parallel", "# Particles: " + particles.size());
 		*/
 		
-		Log.d("Parallel", "# Particles: " + particles.size());
-		
-
+		// Code common to both serial and parallel verions.
 		mArea = new EmptyArea();
 		mCloudAverageState = new double[2];
 		mCloudAverageState[0] = x;
@@ -303,7 +312,17 @@ public class ParticlePosition {
 			for (Particle particle : particles) {
 				Particle newParticle = particle.copy(particle.getWeight());
 
-				double result = (particle.getX()-x)*(particle.getX()-x)+(particle.getY()-y)*(particle.getY()-y);
+				double px;
+				double py;
+				Point2D past = particle.getPastPoint2D();
+				if (type == "i" && past != null) {
+					px = past.getX();
+					py = past.getY();
+				} else {
+					px = particle.getX();
+					py = particle.getY();
+				}
+				double result = (px-x)*(px-x)+(py-y)*(py-y);
 				double firstPart = 1.0/(Math.sqrt(2.0*Math.PI) * sigma);
 				double secondPart = Math.exp(-result/(2.0 * sigma * sigma));
 				double finalResult = firstPart * secondPart;
@@ -350,6 +369,11 @@ public class ParticlePosition {
 		computeCloudAverageState();
 	}
 
+	public void setPastPoint2D() {
+		for (Particle particle: particles) {
+			particle.setPastPoint2D();
+		}
+	}
 
 	public Point2D getValidPoint(Point2D newCoord, Point2D oldCoord) {
 		//Collection<Line2D> walls = mArea.getWallsModel().getWalls();

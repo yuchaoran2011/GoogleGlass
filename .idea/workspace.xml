@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="14906011-3151-452e-a838-e4dbd0b7c2ae" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/GG-Perfect.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Parallel$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Parallel$2.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/AccumulativeSignalPower.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/AccumulativeSignalPower.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/AndroidFileUtils.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/AndroidFileUtils.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/floors/Area.class" afterPath="$PROJECT_DIR$/bin/classes/pf/floors/Area.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/floors/AreaBuilder.class" afterPath="$PROJECT_DIR$/bin/classes/pf/floors/AreaBuilder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/floors/AreaLayerModel.class" afterPath="$PROJECT_DIR$/bin/classes/pf/floors/AreaLayerModel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/BuildConfig.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/BuildConfig.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/CameraPreview.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/CameraPreview.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/ColorRamping.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/ColorRamping.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/ColorRamping.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/ColorRamping.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/thirdparty/fft/Complex.class" afterPath="$PROJECT_DIR$/bin/classes/thirdparty/fft/Complex.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/ContinuousConvolution.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/ContinuousConvolution.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/CumulativeSignalPowerTD.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/CumulativeSignalPowerTD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/DelayQueue.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/DelayQueue.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/EasyHTTPPost.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/EasyHTTPPost.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/floors/EmptyArea.class" afterPath="$PROJECT_DIR$/bin/classes/pf/floors/EmptyArea.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/thirdparty/fft/FFT.class" afterPath="$PROJECT_DIR$/bin/classes/thirdparty/fft/FFT.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/FrequencyCounter.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/FrequencyCounter.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/GG-Perfect.apk" afterPath="$PROJECT_DIR$/bin/GG-Perfect.apk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Grid.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Grid.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/GridPoint2D.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/GridPoint2D.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/IDataSink.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/IDataSink.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/IDigitalFilter.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/IDigitalFilter.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/IOUtil.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/IOUtil.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/IStepDetector.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/IStepDetector.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/IStepListener.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/IStepListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Line2D.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Line2D.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/LocRequest.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/LocRequest.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/Logs.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/Logs.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$1.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$2.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$3.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$4.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$PostToServerTask.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity$PostToServerTask.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MainActivity.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MapView.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MapView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/MathUtils.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/MathUtils.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverage.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverage.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/MovingAverageStepDetector$MovingAverageStepDetectorState.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/MovingAverageStepDetector$MovingAverageStepDetectorState.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/MovingAverageStepDetector.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/MovingAverageStepDetector.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverageTD$Sample.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverageTD$Sample.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverageTD.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/MovingAverageTD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MyScheduleReceiver.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MyScheduleReceiver.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MyStartServiceReceiver.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/MyStartServiceReceiver.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/distr/NormalDistribution.class" afterPath="$PROJECT_DIR$/bin/classes/pf/distr/NormalDistribution.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Parallel.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Parallel.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/particle/Particle.class" afterPath="$PROJECT_DIR$/bin/classes/pf/particle/Particle.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/particle/ParticlePosition$ParticleGenerationMode.class" afterPath="$PROJECT_DIR$/bin/classes/pf/particle/ParticlePosition$ParticleGenerationMode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/particle/ParticlePosition.class" afterPath="$PROJECT_DIR$/bin/classes/pf/particle/ParticlePosition.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/PipedCrossCorrelation.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/PipedCrossCorrelation.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Point2D.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Point2D.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Polygon.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Polygon.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/QueryTask.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/QueryTask.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$attr.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$attr.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$dimen.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$dimen.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$drawable.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$drawable.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$id.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$id.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$layout.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$layout.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$menu.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$menu.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$string.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$string.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$style.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$style.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$xml.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R$xml.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/R.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/Rectangle.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/Rectangle.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/RectangleGrid$RectangleGridIterator.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/RectangleGrid$RectangleGridIterator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/utils/RectangleGrid.class" afterPath="$PROJECT_DIR$/bin/classes/pf/utils/RectangleGrid.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/ScanComparable.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/ScanComparable.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/SensorHelper.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/SensorHelper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/SensorLogger.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/SensorLogger.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPower.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPower.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPowerTD$Sample.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPowerTD$Sample.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPowerTD.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalPowerTD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalWindow.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SignalWindow.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/pf/floors/SimpleLineListReader.class" afterPath="$PROJECT_DIR$/bin/classes/pf/floors/SimpleLineListReader.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SinXPiWindow.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SinXPiWindow.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWave.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWave.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWaveCrossCorrelation.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWaveCrossCorrelation.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWaveCrossCorrelationBank.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/SineWaveCrossCorrelationBank.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviation.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviation.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD2$Sample.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD2$Sample.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD2.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/StandardDeviationTD2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/Step.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/Step.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionDemo$GraphView.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionDemo$GraphView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionDemo.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionDemo.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionFFT$GraphView.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionFFT$GraphView.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionFFT.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetectionFFT.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetector.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepDetector.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepEvent.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StepEvent.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StrideLengthEstimator.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/service/stepdetector/StrideLengthEstimator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/TimeDomainConvolution.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/dsp/filters/TimeDomainConvolution.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService$1.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService$MyBinder.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService$MyBinder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService.class" afterPath="$PROJECT_DIR$/bin/classes/edu/berkeley/wifi/WifiScanService.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/Writer.class" afterPath="$PROJECT_DIR$/bin/classes/cz/muni/fi/sandbox/utils/Writer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes.dex" afterPath="$PROJECT_DIR$/bin/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pf/utils/Parallel.java" afterPath="$PROJECT_DIR$/src/pf/utils/Parallel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pf/particle/ParticlePosition.java" afterPath="$PROJECT_DIR$/src/pf/particle/ParticlePosition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lint.xml" afterPath="$PROJECT_DIR$/lint.xml" />
+    </list>
+    <ignored path="GG-Perfect.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any converted="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <ui_properties converted="true" />
+    <breakpoint_rules converted="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="GG-Perfect" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="Parallel.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pf/utils/Parallel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.49075392" vertical-offset="0" max-vertical-offset="1515">
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Grid.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pf/utils/Grid.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Manifest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/Manifest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="180">
+              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BuildConfig.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+              <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="R.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/R.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1215">
+              <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java" />
+        <option value="$PROJECT_DIR$/src/pf/utils/Parallel.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="20" />
+    <option name="y" value="22" />
+    <option name="width" value="1400" />
+    <option name="height" value="826" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="2" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pf" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pf" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GG-Perfect" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gen" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wifi" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.lastSelected" value="editor" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <list size="0" />
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14906011-3151-452e-a838-e4dbd0b7c2ae" name="Default" comment="" />
+      <created>1399220051409</created>
+      <updated>1399220051409</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="20" y="22" width="1400" height="826" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32968536" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.205" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/pf/utils/Parallel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1500">
+          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/Manifest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="180">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="195">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1215">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/Manifest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1140">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/edu/berkeley/wifi/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pf/utils/Grid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="703">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pf/utils/Parallel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.49075392" vertical-offset="0" max-vertical-offset="1515">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>GG-Perfect</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>Android 4.2.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

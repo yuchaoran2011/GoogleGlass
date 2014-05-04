@@ -1,5 +1,6 @@
 package pf.utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -8,12 +9,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import pf.particle.Particle;
+import android.util.Log;
 
 public class Parallel {
-	public static HashSet<Particle> parGenParticles(int tot, double x, double y, double weight)
+	public static ArrayList<Particle> parGenParticles(int tot, double x, double y, double weight)
 			throws InterruptedException, ExecutionException {
 
-		int threads = Runtime.getRuntime().availableProcessors();
+		//int threads = Runtime.getRuntime().availableProcessors();
+		int threads = 1;
 		//Log.d("Parallel", "# Threads: " + threads+"");
 		final ExecutorService service = Executors.newFixedThreadPool(threads);
 
@@ -21,45 +24,66 @@ public class Parallel {
 		final double x_pos = x;
 		final double y_pos = y;
 
-		final HashSet<Particle> outputs = new HashSet<Particle>(); 
+		final ArrayList<Particle> output = new ArrayList<Particle>(tot); 
 
-		final HashSet<Future<Void>> futures = new HashSet<Future<Void>>();
-		final int workLoad = (int) Math.floor(tot/threads);
-		final int tail = tot - workLoad * threads;
+		final HashSet<Future<ArrayList<Particle>>> futures = new HashSet<Future<ArrayList<Particle>>>(threads);
+		final int workLoad = (int) Math.floor(tot/threads); // Assume number of threads divides total workload.
 
+		/*
+		final class GenParticles extends Thread {
+
+			int workLoad;
+
+			GenParticles(int workLoad) {
+			       this.workLoad = workLoad;
+			}
+
+		    public void run() {
+		    	for (int j=0; j<workLoad; ++j) {
+					output.add(Particle.polarNormalDistr(x_pos, y_pos, 0.5, w));
+				}
+		    }
+		}
+
+		ArrayList<GenParticles> list = new ArrayList<GenParticles>();
 		for (int i=0; i<threads; ++i) {
-			Callable<Void> callable = new Callable<Void>() {
-				public Void call() { 
-					for (int j=0; j<workLoad; ++j) {
-						outputs.add(Particle.polarNormalDistr(x_pos, y_pos, 0.5, w));
+			list.add(new GenParticles(workLoad));
+			list.get(i).start();
+		}
+		for (int i=0; i<threads; ++i) {
+			list.get(i).join();
+		}*/
+
+		
+		//long s1 = System.currentTimeMillis();
+		for (int i=0; i<threads; ++i) {
+			Callable<ArrayList<Particle>> callable = new Callable<ArrayList<Particle>>() {
+				public ArrayList<Particle> call() { 
+					long start = System.currentTimeMillis();
+					ArrayList<Particle> result = new ArrayList<Particle>(workLoad);
+					for (int i=0; i<workLoad; ++i) {
+						result.add(Particle.polarNormalDistr(x_pos, y_pos, 0.5, w));
 					}
-					return null;
+					long dur = System.currentTimeMillis() - start;
+					Log.d("Parallel", "Thread duration: " + dur);
+					return result;
 				}			
 			};
 			futures.add(service.submit(callable));
 		}
 
-		if (tail != 0) {
-			Callable<Void> callable = new Callable<Void>() {
-				public Void call() {
-					for (int j=0; j<tail; ++j) {
-						outputs.add(Particle.polarNormalDistr(x_pos, y_pos, 0.5, w));
-					}
-					return null;
-				}
-			};
-			futures.add(service.submit(callable));
-		}
-
 		service.shutdown();
-		
-		for (Future<Void> f: futures) {
-			while (!f.isDone()) {
-				// Keep looping until current future is done.
-			}
-		}
+		//long dur1 = System.currentTimeMillis() - s1;
+		//Log.d("Parallel", "Init duration: " + Long.toString(dur1));
 
-		return outputs;
+		//long start = System.currentTimeMillis();
+		for (Future<ArrayList<Particle>> future : futures) {
+			output.addAll(future.get());
+		}
+		//long dur = System.currentTimeMillis() - start;
+		//Log.d("Parallel", "Clean-up duration: " + Long.toString(dur));
+
+		return output;
 	}
 
 	/*

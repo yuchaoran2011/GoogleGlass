@@ -70,7 +70,7 @@ import cz.muni.fi.sandbox.service.stepdetector.MovingAverageStepDetector;
 import cz.muni.fi.sandbox.service.stepdetector.MovingAverageStepDetector.MovingAverageStepDetectorState;
 
 public class MainActivity extends Activity implements SensorEventListener{
-	static final String IMAGE_URL = "http://sofia.eecs.berkeley.edu:8010";
+	static final String IMAGE_URL = "http://ahvaz.eecs.berkeley.edu:8001";
 	private final int IMWIDTH = 640;
 	private final int IMHEIGHT = 480;
 
@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 	long tImgHeadingTaken = 0L;
 	float mConvolution, mLastConvolution;
 
-	private String PATH_FILE_UPLOAD_URL = "http://10.142.34.173:8000/central/path_file";
+	private String PATH_FILE_UPLOAD_URL = "http://10.142.39.141:8003/central/path_file";
 
 	double stepLength = -10.0;
 	ArrayList<Point2D> imgStepHistory;
@@ -133,6 +133,8 @@ public class MainActivity extends Activity implements SensorEventListener{
 		@Override
 		public void onPictureTaken(byte[] data, Camera camera) {
 			Log.d("CAMERA", "Picture taken!");
+			
+			mParticleCloud.setPastPoint2D();
 
 			Bitmap tmp;
 			try {
@@ -480,7 +482,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 		//this.mParticleCloud.setArea(mCory2);
 		imgStepHistory = new ArrayList<Point2D>();
 
-		startScan();
+		//startScan();
 	}
 
 	@Override
